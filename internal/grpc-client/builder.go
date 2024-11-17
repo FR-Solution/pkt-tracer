@@ -95,7 +95,7 @@ func (bld clientConnBuilder) New(ctx context.Context) (*grpc.ClientConn, error) 
 	}
 	dialOpts = append(dialOpts, grpc.WithTransportCredentials(bld.creds))
 	if dialDuration := bld.dialDuration; dialDuration <= 0 {
-		dialOpts = append(dialOpts, grpc.WithReturnConnectionError())
+		dialOpts = append(dialOpts, grpc.WithReturnConnectionError()) //nolint:staticcheck
 	} else {
 		if dialDuration < time.Second {
 			dialDuration = time.Second
@@ -148,7 +148,7 @@ func (bld clientConnBuilder) New(ctx context.Context) (*grpc.ClientConn, error) 
 	if compName := bld.compressor; compName != "" {
 		dialOpts = append(dialOpts, grpc.WithDefaultCallOptions(grpc.UseCompressor(compName)))
 	}
-	c, err = grpc.DialContext(ctx, endpoint, dialOpts...)
+	c, err = grpc.DialContext(ctx, endpoint, dialOpts...) //nolint:staticcheck
 	return c, errors.WithMessage(err, api)
 }
 
