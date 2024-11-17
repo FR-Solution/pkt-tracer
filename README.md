@@ -1,4 +1,4 @@
-## Visor
+## Visor (a.k.a pkt-tracer)
 #### Visor provides a set of utilities for convenient analysis and visualization of network traffic
 <img src="assets/screen_visor_ui.png"/>
 
