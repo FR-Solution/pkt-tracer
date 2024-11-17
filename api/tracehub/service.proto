@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package hbf.v1.tracehub;
+
+option go_package = "github.com/wildberries-tech/pkt-tracer/pkg/api/tracehub;tracehub";
+
+import "google/protobuf/empty.proto";
+import "tracehub/messages.proto";
+
+
+//TraceHubService: service for storing and streaming network packet tracing
+service TraceHubService {
+    rpc TraceStream(stream Traces) returns (google.protobuf.Empty);
+    rpc FetchTraces(TraceScope) returns (stream TraceList);
+    rpc SyncNftTables(stream SyncTableReq) returns (google.protobuf.Empty);
+    rpc FetchNftTable(FetchNftTableQry) returns (NftTableList);
+}

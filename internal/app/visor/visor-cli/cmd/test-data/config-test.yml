@@ -1,0 +1,14 @@
+graceful-shutdown: 10s
+
+logger:
+  level: DEBUG
+
+useragent: "string"
+
+extapi:
+  svc:
+    def-daial-duration: 10s
+    tracehub:
+      dial-duration: 3s #override default-connect-tmo
+      address: tcp://127.0.0.2:9010
+      use-compression: false

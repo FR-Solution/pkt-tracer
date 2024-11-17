@@ -1,0 +1,35 @@
+logger:
+    # log level
+    level: DEBUG
+
+metrics:
+    # enable api metrics
+    enable: true
+
+healthcheck:
+    # enables|disables health check handler
+    enable: true
+
+server:
+    # server endpoint
+    endpoint: tcp://0.0.0.0:9650
+    # graceful shutdown period
+    graceful-shutdown: 30s
+
+storage:
+    # db type
+    type: clickhouse
+    # clickhouse setup
+    clickhouse:
+        # number of rows saved before flush
+        rows-for-flush: 10000
+        # maximum time interval between flushing stored rows
+        flushing-interval: 5s
+        # URL to connect ClickHouse DB. Here:
+        # max_execution_time - maximum time for one transaction
+        # dial_timeout - the maximum time to establish a connection. Defaults to 1s
+        # client_info_product - some client information
+        # compress - enable one of the compression algorithm
+        # block_buffer_size - maximum number of blocks to decode into the buffer at once
+        # skip_verify - tls option
+        url: tcp://root:qwerty@localhost:19000/swarm?max_execution_time=60&dial_timeout=10s&client_info_product=trace-hub/0.0.1&compress=lz4&block_buffer_size=10&max_compression_buffer=10240&skip_verify=true

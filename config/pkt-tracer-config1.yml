@@ -1,0 +1,36 @@
+logger:
+    # log level
+    level: DEBUG
+
+telemetry:
+    useragent: tracer2
+    # telemetry server endpoint
+    endpoint: 127.0.0.1:5001
+    metrics:
+        # enable api metrics
+        enable: true
+    healthcheck:
+        # enables|disables health check handler
+        enable: true
+
+extapi:
+    svc:
+        # default dial duraton to conect a service [optional]
+        def-daial-duration: 10s
+        tracehub:
+            # trace-hub service dial duration
+            dial-duration: 3s
+            # trace hub service address
+            address: tcp://127.0.0.1:9650
+            # max timeout to send grpc stream
+            timeout-stream: 2s
+            # max available messages in one stream
+            max-stream-size: 100
+            # enable compression for grpc messages
+            use-compression: false
+
+server:
+    # server endpoint
+    endpoint: tcp://0.0.0.0:9000
+    # graceful shutdown period
+    graceful-shutdown: 30s

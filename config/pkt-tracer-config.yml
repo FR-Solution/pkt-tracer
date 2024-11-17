@@ -1,0 +1,39 @@
+logger:
+    # log level
+    level: DEBUG
+
+telemetry:
+    useragent: tracer1
+    # telemetry server endpoint
+    endpoint: 127.0.0.1:5000
+    metrics:
+        # enable api metrics
+        enable: true
+    healthcheck:
+        # enables|disables health check handler
+        enable: true
+
+extapi:
+    svc:
+        # default dial duraton to conect a service [optional]
+        def-daial-duration: 10s
+        tracehub:
+            # trace-hub service dial duration
+            dial-duration: 3s
+            # trace hub service address
+            address: tcp://127.0.0.1:9000
+            # enable compression for grpc messages
+            use-compression: false
+        sgroups:
+            dial-duration: 3s
+            address: tcp://127.0.0.1:9652
+            sync-status:
+                interval: 3s #mandatory
+                push: true
+
+
+server:
+    # server endpoint
+    endpoint: tcp://0.0.0.0:9650
+    # graceful shutdown period
+    graceful-shutdown: 30s

@@ -1,0 +1,191 @@
+syntax = "proto3";
+
+option go_package = "github.com/wildberries-tech/pkt-tracer/pkg/api/tracehub;tracehub";
+
+import "google/protobuf/timestamp.proto";
+
+
+//Trace: traces of network packets transmitted to the server
+message Trace {
+    // trace id
+    uint32 tr_id = 1;
+    // nftables table name
+    string table = 2;
+    // nftables chain name
+    string chain = 3;
+    // nftables jump to a target name
+    string jump_target = 4;
+    // nftables rule number
+    uint64 rule_handle = 5;
+    // protocols family
+    string family = 6;
+    // input network interface
+    string iifname = 7;
+    // output network interface
+    string oifname = 8;
+    // source mac address
+    string s_mac_addr = 9;
+    // destination mac address
+    string d_mac_addr = 10;
+    // source ip address
+    string s_addr = 11;
+    // destination ip address
+    string d_addr = 12;
+    // source port
+    uint32 s_port = 13;
+    // destination port
+    uint32 d_port = 14;
+    // length packet
+    uint32 length = 15;
+    // ip protocol (tcp/udp/icmp/...)
+    string ip_proto = 16;
+    // verdict for the rule
+    string verdict = 17;
+    // rule expression
+    string rule = 18;
+    // name of the security group for src ip
+    string s_sg_name = 19;
+    // name of the security group for dst ip
+    string d_sg_name = 20;
+    // name of the network for src ip
+    string s_sg_net = 21;
+    // name of the network for dst ip
+    string d_sg_net = 22;
+}
+
+//Traces: represents subject of traces
+message Traces {
+    //trace items
+    repeated Trace traces = 1;
+}
+
+// FetchTrace: fetch trace from server
+message FetchTrace {
+    // trace content
+    Trace trace = 1;
+    // table id related to trace
+    uint64 table_id = 2;
+    // trace creation time
+    google.protobuf.Timestamp timestamp = 3;
+}
+
+//TraceList: represents list of traces fetched from server
+message TraceList {
+    repeated FetchTrace traces = 1;
+}
+
+//TimeRange: represents time interval filter parameter
+message TimeRange {
+    // time from
+    google.protobuf.Timestamp from = 1;
+    // time to
+    google.protobuf.Timestamp to = 2;
+}
+
+// TraceScope - 
+message TraceScope {
+    // trace id
+    repeated uint32 tr_id = 1;
+    // nftables table name
+    repeated string table = 2;
+    // nftables chain name
+    repeated string chain = 3;
+    // nftables jump to a target name
+    repeated string jump_target = 4;
+    // nftables rule number
+    repeated uint64 rule_handle = 5;
+    // protocols family
+    repeated string family = 6;
+    // input network interface
+    repeated string iifname = 7;
+    // output network interface
+    repeated string oifname = 8;
+    // source mac address
+    repeated string s_mac_addr = 9;
+    // destination mac address
+    repeated string d_mac_addr = 10;
+    // source ip address
+    repeated string s_addr = 11;
+    // destination ip address
+    repeated string d_addr = 12;
+    // source port
+    repeated uint32 s_port = 13;
+    // destination port
+    repeated uint32 d_port = 14;
+    // length packet
+    repeated uint32 length = 15;
+    // ip protocol (tcp/udp/icmp/...)
+    repeated string ip_proto = 16;
+    // verdict for the rule
+    repeated string verdict = 17;
+    // rule expression
+    repeated string rule = 18;
+    // name of the security group for src ip
+    repeated string s_sg_name = 19;
+    // name of the security group for dst ip
+    repeated string d_sg_name = 20;
+    // name of the network for src ip
+    repeated string s_sg_net = 21;
+    // name of the network for dst ip
+    repeated string d_sg_net = 22;
+    // follow mode on/off
+    bool follow_mode = 23;
+    // time interval filter parameter
+    TimeRange time = 24;
+    // complex query filter parameter
+    string query = 25;
+    // list of visor agents identifiers
+    repeated string agents_ids = 26;
+}
+
+// NftRuleInChain: rule to chain
+message NftRuleInChain {
+    // nftables chain name
+    string chain_name = 1;
+    // rule expression
+    string rule = 2;
+}
+
+// NftTable: nft tables transmitted to server from client
+message NftTable {
+    // nftables table name
+    string table_name = 1;
+    // protocols family
+    string table_family = 2;
+    // nftables table represented as string
+    string table_str = 3;
+    // nftables rules items
+    repeated NftRuleInChain rules = 4;
+}
+
+message SyncTableReq {
+    // nftables tables items
+    repeated NftTable table=1;
+}
+
+message FetchNftTableQry {
+    message All {}
+    message ByTableId {
+        repeated uint64 table_id = 1;
+    }
+
+    oneof scoped {
+        All no_scope = 1;
+        ByTableId scoped_by_table_id = 2;
+    }
+}
+
+//NftTableResp: response nft table from server
+message NftTableResp {
+    // table id
+    uint64 table_id = 1;
+    // nftables table represented as string
+    string table_str = 2;
+    // timestamp
+    google.protobuf.Timestamp timestamp = 3;
+}
+
+message NftTableList {
+    // fetched tables
+    repeated NftTableResp tables = 1;
+}
